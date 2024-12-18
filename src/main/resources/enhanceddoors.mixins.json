@@ -3,7 +3,8 @@
 	"package": "dev.cammiescorner.enhanceddoors.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ExampleMixin"
+		"BlockEntityTypeMixin",
+		"DoorBlockMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

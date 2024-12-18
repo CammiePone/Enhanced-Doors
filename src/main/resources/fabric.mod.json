@@ -3,21 +3,31 @@
 	"id": "enhanceddoors",
 	"version": "${version}",
 	"name": "enhanceddoors",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Connects double doors, and animates all doors.",
 	"authors": [
-		"Me!"
+		"Cammie"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
-	"license": "CC0-1.0",
+	"license": "Cammie's Corner License",
 	"icon": "assets/enhanceddoors/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"dev.cammiescorner.enhanceddoors.Enhanceddoors"
+			"dev.cammiescorner.enhanceddoors.EnhancedDoors"
+		],
+		"client": [
+			"dev.cammiescorner.enhanceddoors.client.EnhancedDoorsClient"
 		]
+	},
+	"custom": {
+		"loom:injected_interfaces": {
+			"net/minecraft/class_2591": [
+				"dev/cammiescorner/enhanceddoors/common/ValidBlocksAccess"
+			]
+		}
 	},
 	"mixins": [
 		"enhanceddoors.mixins.json"
@@ -26,9 +36,7 @@
 		"fabricloader": ">=0.16.9",
 		"minecraft": "~1.20.1",
 		"java": ">=17",
-		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
+		"fabric-api": "*",
+		"resourcefulconfig": ">=2.1.2"
 	}
 }

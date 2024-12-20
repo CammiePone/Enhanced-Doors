@@ -23,8 +23,9 @@ public class OpeningProgressComponent implements AutoSyncedComponent {
 		tag.putLong("OpenedAt", openingTicks);
 	}
 
-	public float getProgress() {
-		return Mth.clamp((door.getLevel().getGameTime() - openingTicks) / 10f, 0f, 1f);
+	public float getProgress(float tickDelta) {
+		long gameTime = door.getLevel().getGameTime();
+		return Mth.clamp((Mth.lerp(tickDelta, gameTime - 1, gameTime) - openingTicks) / 5f, 0f, 1f);
 	}
 
 	public void justOpened() {

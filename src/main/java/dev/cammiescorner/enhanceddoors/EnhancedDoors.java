@@ -1,5 +1,6 @@
 package dev.cammiescorner.enhanceddoors;
 
+import dev.cammiescorner.enhanceddoors.common.ValidBlocksAccess;
 import dev.cammiescorner.enhanceddoors.common.registries.EnhancedDoorsBlocks;
 import dev.cammiescorner.enhanceddoors.common.registries.EnhancedDoorsTags;
 import net.fabricmc.api.ModInitializer;
@@ -16,13 +17,13 @@ public class EnhancedDoors implements ModInitializer {
 		EnhancedDoorsBlocks.register();
 
 		BuiltInRegistries.BLOCK.forEach(block -> {
-			if(block instanceof DoorBlock && block.defaultBlockState().is(EnhancedDoorsTags.DONT_ANIMATE))
-				EnhancedDoorsBlocks.DOOR_ENTITY.addBlockToDoorType(block);
+			if(block instanceof DoorBlock && !block.defaultBlockState().is(EnhancedDoorsTags.DONT_ANIMATE))
+				((ValidBlocksAccess) EnhancedDoorsBlocks.DOOR_ENTITY).addBlockToDoorType(block);
 		});
 
 		RegistryEntryAddedCallback.event(BuiltInRegistries.BLOCK).register((i, resourceLocation, block) -> {
-			if(block instanceof DoorBlock && block.defaultBlockState().is(EnhancedDoorsTags.DONT_ANIMATE))
-				EnhancedDoorsBlocks.DOOR_ENTITY.addBlockToDoorType(block);
+			if(block instanceof DoorBlock && !block.defaultBlockState().is(EnhancedDoorsTags.DONT_ANIMATE))
+				((ValidBlocksAccess) EnhancedDoorsBlocks.DOOR_ENTITY).addBlockToDoorType(block);
 		});
 	}
 

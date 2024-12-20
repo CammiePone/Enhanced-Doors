@@ -45,15 +45,13 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 
 	public DoorBlockMixin(Properties properties) { super(properties); }
 
-	// TODO couple the doors pls
-
 	@Inject(method = "neighborChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
 	private void openSesameRedstone(BlockState blockState, Level level, BlockPos blockPos, Block block, BlockPos blockPos2, boolean bl, CallbackInfo ci) {
 		Direction facing = blockState.getValue(FACING);
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
 
-		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN)) {
+		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
 			offsetState = offsetState.cycle(POWERED).cycle(OPEN);
 			level.setBlock(offset, offsetState, Block.UPDATE_CLIENTS);
 			playSound(null, level, offset, offsetState.getValue(OPEN));
@@ -76,7 +74,7 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
 
-		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN)) {
+		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
 			offsetState = offsetState.cycle(OPEN);
 			level.setBlock(offset, offsetState, Block.UPDATE_CLIENTS);
 			playSound(entity, level, offset, offsetState.getValue(OPEN));
@@ -96,7 +94,7 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
 
-		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) != blockState.getValue(OPEN)) {
+		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) != blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
 			offsetState = offsetState.cycle(OPEN);
 			level.setBlock(offset, offsetState, Block.UPDATE_CLIENTS);
 			playSound(player, level, offset, offsetState.getValue(OPEN));

@@ -20,6 +20,9 @@
 		],
 		"client": [
 			"dev.cammiescorner.enhanceddoors.client.EnhancedDoorsClient"
+		],
+		"cardinal-components": [
+			"dev.cammiescorner.enhanceddoors.common.registries.EnhancedDoorsComponents"
 		]
 	},
 	"custom": {
@@ -27,7 +30,10 @@
 			"net/minecraft/class_2591": [
 				"dev/cammiescorner/enhanceddoors/common/ValidBlocksAccess"
 			]
-		}
+		},
+		"cardinal-components": [
+			"enhanceddoors:opening_progress"
+		]
 	},
 	"mixins": [
 		"enhanceddoors.mixins.json"

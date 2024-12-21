@@ -1,5 +1,6 @@
 package dev.cammiescorner.enhanceddoors.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import dev.cammiescorner.enhanceddoors.common.GotAnyGrapes;
 import dev.cammiescorner.enhanceddoors.common.blocks.entities.DoorBlockEntity;
 import dev.cammiescorner.enhanceddoors.common.registries.EnhancedDoorsComponents;
@@ -46,19 +47,18 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 	public DoorBlockMixin(Properties properties) { super(properties); }
 
 	@Inject(method = "neighborChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
-	private void openSesameRedstone(BlockState blockState, Level level, BlockPos blockPos, Block block, BlockPos blockPos2, boolean bl, CallbackInfo ci) {
+	private void openSesameRedstone(BlockState blockState, Level level, BlockPos blockPos, Block block, BlockPos blockPos2, boolean bl, CallbackInfo ci, @Local(ordinal = 1) boolean bl2) {
 		Direction facing = blockState.getValue(FACING);
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
 
 		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
-			offsetState = offsetState.cycle(POWERED).cycle(OPEN);
-			level.setBlock(offset, offsetState, Block.UPDATE_CLIENTS);
-			playSound(null, level, offset, offsetState.getValue(OPEN));
-			level.gameEvent(null, isOpen(offsetState) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, offset);
+			if(bl2 != offsetState.getValue(OPEN)) {
+				playSound(null, level, offset, bl2);
+				level.gameEvent(null, bl2 ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, offset);
+			}
 
-			if(level.getBlockEntity(offset.below(offsetState.getValue(HALF) == DoubleBlockHalf.UPPER ? 1 : 0)) instanceof DoorBlockEntity blockEntity)
-				blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
+			level.setBlock(offset, offsetState.setValue(POWERED, bl2).setValue(OPEN, bl2), 2);
 
 			if(level.getBlockEntity(offset.below(offsetState.getValue(HALF) == DoubleBlockHalf.UPPER ? 1 : 0)) instanceof DoorBlockEntity blockEntity)
 				blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();

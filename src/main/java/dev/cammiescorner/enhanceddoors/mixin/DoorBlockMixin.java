@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import dev.cammiescorner.enhanceddoors.common.GotAnyGrapes;
 import dev.cammiescorner.enhanceddoors.common.blocks.entities.DoorBlockEntity;
 import dev.cammiescorner.enhanceddoors.common.registries.EnhancedDoorsComponents;
+import dev.cammiescorner.enhanceddoors.common.registries.EnhancedDoorsTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -38,11 +39,10 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 	@Shadow @Final public static BooleanProperty OPEN;
 	@Shadow @Final public static BooleanProperty POWERED;
 
-	@Shadow protected abstract void playSound(@Nullable Entity entity, Level level, BlockPos blockPos, boolean bl);
-
-	@Shadow public abstract boolean isOpen(BlockState blockState);
-
 	@Unique private final ThreadLocal<Boolean> A = ThreadLocal.withInitial(() -> false);
+
+	@Shadow protected abstract void playSound(@Nullable Entity entity, Level level, BlockPos blockPos, boolean bl);
+	@Shadow public abstract boolean isOpen(BlockState blockState);
 
 	public DoorBlockMixin(Properties properties) { super(properties); }
 
@@ -51,6 +51,9 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 		Direction facing = blockState.getValue(FACING);
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
+
+		if(blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
+			return;
 
 		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
 			if(bl2 != offsetState.getValue(OPEN)) {
@@ -74,6 +77,9 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
 
+		if(blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
+			return;
+
 		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
 			offsetState = offsetState.cycle(OPEN);
 			level.setBlock(offset, offsetState, Block.UPDATE_CLIENTS);
@@ -93,6 +99,9 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 		Direction facing = blockState.getValue(FACING);
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
+
+		if(blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
+			return;
 
 		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) != blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
 			offsetState = offsetState.cycle(OPEN);

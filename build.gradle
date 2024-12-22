@@ -4,12 +4,12 @@ plugins {
 	id 'maven-publish'
 }
 
+def ENV = System.getenv()
+def buildTime = ENV.BUILD_TIME ?: new Date().format('yyyyMMddHHmmss')
+
 version = project.mod_version
 group = project.maven_group
-
-base {
-	archivesName = project.archives_base_name
-}
+archivesBaseName = project.archives_base_name
 
 repositories {
 	maven {
@@ -57,21 +57,37 @@ java {
 }
 
 jar {
-	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
+	from("LICENSE.md") {
+		rename { "LICENSE_${archivesBaseName}.md" }
 	}
+
+	manifest.mainAttributes(
+			"Implementation-Title": project.archivesBaseName,
+			"Implementation-Version": project.version,
+			"Maven-Artifact": "${project.group}:${project.archivesBaseName}:${project.version}".toLowerCase(Locale.ROOT),
+			"Built-On-Minecraft": libs.versions.minecraft.get(),
+			"Built-On-Java": "${System.getProperty("java.vm.version")} (${System.getProperty("java.vm.vendor")})"
+	)
 }
 
 publishing {
 	publications {
-		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
+		mavenJava(MavenPublication) {
+			artifactId "Enhanced-Doors"
 			from components.java
 		}
 	}
 
 	repositories {
-
+		if (ENV.MAVEN_UPLOAD_URL) {
+			maven {
+				url = ENV.MAVEN_UPLOAD_URL
+				credentials {
+					username = ENV.MAVEN_UPLOAD_USERNAME
+					password = ENV.MAVEN_UPLOAD_PASSWORD
+				}
+			}
+		}
 	}
 }
 

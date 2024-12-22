@@ -42,9 +42,6 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 
 	@Unique private final ThreadLocal<Boolean> A = ThreadLocal.withInitial(() -> false);
 
-	@Shadow protected abstract void playSound(@Nullable Entity entity, Level level, BlockPos blockPos, boolean bl);
-	@Shadow public abstract boolean isOpen(BlockState blockState);
-
 	public DoorBlockMixin(Properties properties) { super(properties); }
 
 	@Inject(method = "neighborChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
@@ -56,12 +53,15 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
 
+		if(level.getBlockEntity(blockPos.below(blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? 1 : 0)) instanceof DoorBlockEntity blockEntity)
+			blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
+
 		if(blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
 			return;
 
-		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
+		if(offsetState.getBlock() instanceof DoorBlock doorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
 			if(bl2 != offsetState.getValue(OPEN)) {
-				playSound(null, level, offset, bl2);
+				doorBlock.playSound(null, level, offset, bl2);
 				level.gameEvent(null, bl2 ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, offset);
 			}
 
@@ -70,9 +70,6 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 			if(level.getBlockEntity(offset.below(offsetState.getValue(HALF) == DoubleBlockHalf.UPPER ? 1 : 0)) instanceof DoorBlockEntity blockEntity)
 				blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
 		}
-
-		if(level.getBlockEntity(blockPos.below(blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? 1 : 0)) instanceof DoorBlockEntity blockEntity)
-			blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
 	}
 
 	@Inject(method = "setOpen", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
@@ -84,21 +81,21 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
 
-		if(blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
+		if(level.getBlockEntity(blockPos.below(blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? 1 : 0)) instanceof DoorBlockEntity blockEntity)
+			blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
+
+		if(!DoorBlock.isWoodenDoor(offsetState) || blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
 			return;
 
-		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
+		if(offsetState.getBlock() instanceof DoorBlock doorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
 			offsetState = offsetState.cycle(OPEN);
 			level.setBlock(offset, offsetState, Block.UPDATE_CLIENTS);
-			playSound(entity, level, offset, offsetState.getValue(OPEN));
-			level.gameEvent(entity, isOpen(offsetState) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, offset);
+			doorBlock.playSound(entity, level, offset, offsetState.getValue(OPEN));
+			level.gameEvent(entity, doorBlock.isOpen(offsetState) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, offset);
 
 			if(level.getBlockEntity(offset.below(offsetState.getValue(HALF) == DoubleBlockHalf.UPPER ? 1 : 0)) instanceof DoorBlockEntity blockEntity)
 				blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
 		}
-
-		if(level.getBlockEntity(blockPos.below(blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? 1 : 0)) instanceof DoorBlockEntity blockEntity)
-			blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
 	}
 
 	@Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
@@ -110,21 +107,21 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
 
-		if(blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
+		if(level.getBlockEntity(blockPos.below(blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? 1 : 0)) instanceof DoorBlockEntity blockEntity)
+			blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
+
+		if(!DoorBlock.isWoodenDoor(offsetState) || blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
 			return;
 
-		if(offsetState.getBlock() instanceof DoorBlock && offsetState.getValue(OPEN) != blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
+		if(offsetState.getBlock() instanceof DoorBlock doorBlock && offsetState.getValue(OPEN) != blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
 			offsetState = offsetState.cycle(OPEN);
 			level.setBlock(offset, offsetState, Block.UPDATE_CLIENTS);
-			playSound(player, level, offset, offsetState.getValue(OPEN));
-			level.gameEvent(player, isOpen(offsetState) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, offset);
+			doorBlock.playSound(player, level, offset, offsetState.getValue(OPEN));
+			level.gameEvent(player, doorBlock.isOpen(offsetState) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, offset);
 
 			if(level.getBlockEntity(offset.below(offsetState.getValue(HALF) == DoubleBlockHalf.UPPER ? 1 : 0)) instanceof DoorBlockEntity blockEntity)
 				blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
 		}
-
-		if(level.getBlockEntity(blockPos.below(blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? 1 : 0)) instanceof DoorBlockEntity blockEntity)
-			blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
 	}
 
 	@Override

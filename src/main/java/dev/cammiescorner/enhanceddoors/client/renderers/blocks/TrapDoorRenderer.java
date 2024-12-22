@@ -9,9 +9,9 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.DoorHingeSide;
+import net.minecraft.world.level.block.state.properties.Half;
 
 public class TrapDoorRenderer implements BlockEntityRenderer<TrapDoorBlockEntity> {
 	private final BlockEntityRendererProvider.Context context;
@@ -24,10 +24,10 @@ public class TrapDoorRenderer implements BlockEntityRenderer<TrapDoorBlockEntity
 	public void render(TrapDoorBlockEntity blockEntity, float tickDelta, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
 		BlockRenderDispatcher blockRenderer = context.getBlockRenderDispatcher();
 		BlockState state = blockEntity.getBlockState();
-		BlockState defaultState = state.setValue(DoorBlock.OPEN, false);
-		Direction facing = state.getValue(DoorBlock.FACING);
-		DoorHingeSide hingeSide = state.getValue(DoorBlock.HINGE);
-		boolean isOpen = state.getValue(DoorBlock.OPEN);
+		BlockState defaultState = state.setValue(TrapDoorBlock.OPEN, false);
+		Half half = state.getValue(TrapDoorBlock.HALF);
+		Direction facing = state.getValue(TrapDoorBlock.FACING);
+		boolean isOpen = state.getValue(TrapDoorBlock.OPEN);
 		float openingProgress = blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).getProgress(tickDelta);
 
 		if(!isOpen)
@@ -39,7 +39,7 @@ public class TrapDoorRenderer implements BlockEntityRenderer<TrapDoorBlockEntity
 
 		// TODO render trapdoor
 		((GotAnyGrapes) defaultState.getBlock()).setUseSuper(true);
-		blockRenderer.renderSingleBlock(defaultState, poseStack, multiBufferSource, i, j);
+		blockRenderer.renderSingleBlock(state, poseStack, multiBufferSource, i, j);
 		((GotAnyGrapes) defaultState.getBlock()).setUseSuper(false);
 
 		poseStack.popPose();

@@ -57,7 +57,7 @@ jobs:
                   modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
                   curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
                   version: ${{ github.ref_name }}+Fabric
-                  version-type: beta
+                  version-type: release
                   files: |
                       build/libs/!(*-@(dev|sources|javadoc|slim)).jar
                       build/libs/*-@(sources|javadoc).jar

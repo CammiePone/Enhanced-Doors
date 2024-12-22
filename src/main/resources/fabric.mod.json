@@ -41,8 +41,8 @@
 			"enhanceddoors:opening_progress"
 		],
 		"mc-publish": {
-			"curseforge": "",
-			"modrinth": "",
+			"curseforge": "1161466",
+			"modrinth": "cs1j3Dvw",
 			"loaders": [
 				"fabric",
 				"quilt"

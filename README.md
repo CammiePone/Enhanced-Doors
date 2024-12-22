@@ -4,7 +4,7 @@
 Enhanced Doors makes it so doors are now animated and coupled together when opening or closing them.
 
 <div align="center">
-    <img src="https://mod-assets.upcraft.dev/promo/enhanced-doors/banner.gif" width="480" alt="">
+    <img src="https://mod-assets.upcraft.dev/promo/enhanced-doors/banner.webp" width="720" alt="">
 </div>
 
 ---

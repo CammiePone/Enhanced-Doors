@@ -1,5 +1,6 @@
 package dev.cammiescorner.enhanceddoors.common.components;
 
+import dev.cammiescorner.enhanceddoors.EnhancedDoorsConfig;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
@@ -24,8 +25,11 @@ public class OpeningProgressComponent implements AutoSyncedComponent {
 	}
 
 	public float getProgress(float tickDelta) {
+		if(!EnhancedDoorsConfig.animateDoors)
+			return 1f;
+
 		long gameTime = door.getLevel().getGameTime();
-		return Mth.clamp((Mth.lerp(tickDelta, gameTime - 1, gameTime) - openingTicks) / 5f, 0f, 1f);
+		return Mth.clamp((Mth.lerp(tickDelta, gameTime - 1, gameTime) - openingTicks) / EnhancedDoorsConfig.animationLength, 0f, 1f);
 	}
 
 	public void justOpened() {

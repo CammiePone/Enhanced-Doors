@@ -23,6 +23,9 @@
 		],
 		"cardinal-components": [
 			"dev.cammiescorner.enhanceddoors.common.registries.EnhancedDoorsComponents"
+		],
+		"modmenu": [
+			"dev.cammiescorner.enhanceddoors.common.compat.ModMenuCompat"
 		]
 	},
 	"custom": {

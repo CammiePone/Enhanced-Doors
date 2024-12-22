@@ -1,0 +1,5 @@
+{
+	"config.enhanceddoors.connected_doors": "Adjacent doors open together",
+	"config.enhanceddoors.animate_doors": "Doors are animated",
+	"config.enhanceddoors.animation_length": "Length of door animation"
+}

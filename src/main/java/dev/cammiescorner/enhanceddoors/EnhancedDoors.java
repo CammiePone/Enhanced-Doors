@@ -1,5 +1,6 @@
 package dev.cammiescorner.enhanceddoors;
 
+import com.teamresourceful.resourcefulconfig.common.config.Configurator;
 import dev.cammiescorner.enhanceddoors.common.ValidBlocksAccess;
 import dev.cammiescorner.enhanceddoors.common.registries.EnhancedDoorsBlocks;
 import dev.cammiescorner.enhanceddoors.common.registries.EnhancedDoorsTags;
@@ -12,9 +13,11 @@ import net.minecraft.world.level.block.TrapDoorBlock;
 
 public class EnhancedDoors implements ModInitializer {
 	public static final String MOD_ID = "enhanceddoors";
+	public static final Configurator configurator = new Configurator();
 
 	@Override
 	public void onInitialize() {
+		configurator.registerConfig(EnhancedDoorsConfig.class);
 		EnhancedDoorsBlocks.register();
 
 		BuiltInRegistries.BLOCK.forEach(block -> {

@@ -1,6 +1,7 @@
 package dev.cammiescorner.enhanceddoors.common.components;
 
 import dev.cammiescorner.enhanceddoors.EnhancedDoorsConfig;
+import dev.cammiescorner.enhanceddoors.common.registries.EnhancedDoorsComponents;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
@@ -34,5 +35,6 @@ public class OpeningProgressComponent implements AutoSyncedComponent {
 
 	public void justOpened() {
 		openingTicks = door.getLevel().getGameTime();
+		door.syncComponent(EnhancedDoorsComponents.OPENING_PROGRESS);
 	}
 }

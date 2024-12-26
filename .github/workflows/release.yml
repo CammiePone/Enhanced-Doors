@@ -46,7 +46,7 @@ jobs:
               uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659
               with:
                   github-token: ${{ github.token }}
-                  version-type: beta
+                  version-type: release
                   files: |
                       build/libs/!(*-@(dev|sources|javadoc|slim)).jar
                       build/libs/*-@(sources|javadoc).jar
@@ -68,4 +68,4 @@ jobs:
                   webhook-url: ${{ secrets.ANNOUNCEMENT_WEBHOOK_URL }}
                   curseforge-project-id: ${{ steps.publish_fabric.outputs.curseforge-id }}
                   modrinth-project-id: ${{ steps.publish_fabric.outputs.modrinth-id }}
-                  ping-notification-role: false
+                  thumbnail-url: https://mod-assets.upcraft.dev/promo/enhanced-doors/icon_128x.png

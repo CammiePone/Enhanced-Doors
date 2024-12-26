@@ -6,8 +6,10 @@ plugins {
 
 def ENV = System.getenv()
 def buildTime = ENV.BUILD_TIME ?: new Date().format('yyyyMMddHHmmss')
+boolean isPreviewBuild = !ENV.TAG || ENV.TAG.matches(".+-.+")
+def buildNumber = !ENV.TAG ? ("${ENV.BUILD_NUMBER ? "build.${ENV.BUILD_NUMBER}" : buildTime}") : ""
 
-version = project.mod_version
+version = (ENV.TAG ?: "${libs.versions.minecraft.get()}-development") + ((isPreviewBuild && !ENV.TAG) ? "+${buildNumber}" : "")
 group = project.maven_group
 archivesBaseName = project.archives_base_name
 

@@ -37,10 +37,9 @@ public class TrapDoorRenderer implements BlockEntityRenderer<TrapDoorBlockEntity
 
 		poseStack.pushPose();
 
-		// TODO render trapdoor
-		((GotAnyGrapes) defaultState.getBlock()).setUseSuper(true);
+		((GotAnyGrapes) state.getBlock()).setUseSuper(true);
 		blockRenderer.renderSingleBlock(state, poseStack, multiBufferSource, i, j);
-		((GotAnyGrapes) defaultState.getBlock()).setUseSuper(false);
+		((GotAnyGrapes) state.getBlock()).setUseSuper(false);
 
 		poseStack.popPose();
 	}

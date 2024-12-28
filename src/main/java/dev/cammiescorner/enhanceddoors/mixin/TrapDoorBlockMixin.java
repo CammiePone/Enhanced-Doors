@@ -3,8 +3,8 @@ package dev.cammiescorner.enhanceddoors.mixin;
 import dev.cammiescorner.enhanceddoors.common.GotAnyGrapes;
 import dev.cammiescorner.enhanceddoors.common.blocks.entities.TrapDoorBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(TrapDoorBlock.class)
-public abstract class TrapDoorBlockMixin extends Block implements EntityBlock, GotAnyGrapes {
+public abstract class TrapDoorBlockMixin extends HorizontalDirectionalBlock implements EntityBlock, GotAnyGrapes {
 	@Shadow @Final public static EnumProperty<Half> HALF;
 	@Shadow @Final public static BooleanProperty POWERED;
 	@Shadow @Final public static BooleanProperty OPEN;

@@ -2,14 +2,16 @@
 	"schemaVersion": 1,
 	"id": "enhanceddoors",
 	"version": "${version}",
-	"name": "enhanceddoors",
+	"name": "Enhanced Doors",
 	"description": "Connects double doors, and animates all doors.",
 	"authors": [
 		"Cammie"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://cammiescorner.dev",
+		"discord": "https://cammiescorner.dev/discord",
+		"sources": "https://github.com/CammiePone/Enhanced-Doors",
+		"issues": "https://github.com/CammiePone/Enhanced-Doors/issues"
 	},
 	"license": "Cammie's Corner License",
 	"icon": "assets/enhanceddoors/icon.png",
@@ -51,6 +53,11 @@
 				"cardinal-components-api(required)#{modrinth:K01OU20C}{curseforge:318449}",
 				"resourceful-config(required)#{modrinth:M1953qlQ}{curseforge:714059}"
 			]
+		},
+		"modmenu": {
+			"links": {
+				"modmenu.discord": "https://cammiescorner.dev/discord"
+			}
 		}
 	},
 	"mixins": [

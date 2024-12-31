@@ -1,7 +1,7 @@
 package dev.cammiescorner.enhanceddoors.mixin;
 
 import dev.cammiescorner.enhanceddoors.common.GotAnyGrapes;
-import dev.cammiescorner.enhanceddoors.common.blocks.entities.TrapDoorBlockEntity;
+import dev.cammiescorner.enhanceddoors.common.blocks.entities.DoorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -32,7 +32,7 @@ public abstract class TrapDoorBlockMixin extends HorizontalDirectionalBlock impl
 
 	@Override
 	public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-		return new TrapDoorBlockEntity(blockPos, blockState);
+		return new DoorBlockEntity(blockPos, blockState);
 	}
 
 	@Override

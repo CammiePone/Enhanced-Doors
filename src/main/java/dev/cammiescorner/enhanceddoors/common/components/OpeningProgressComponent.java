@@ -7,9 +7,10 @@ import dev.onyxstudios.cca.api.v3.component.tick.ClientTickingComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.Nullable;
 
 public class OpeningProgressComponent implements AutoSyncedComponent, ClientTickingComponent {
-	private final BlockEntity door;
+	private final @Nullable BlockEntity door;
 	private long openingTicks = 0;
 	private long prevOpeningTicks = 0;
 

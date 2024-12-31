@@ -7,6 +7,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class DoorBlockEntity extends BlockEntity {
 	public DoorBlockEntity(BlockPos blockPos, BlockState blockState) {
-		super(EnhancedDoorsBlocks.DOOR_ENTITY, blockPos, blockState);
+		super(EnhancedDoorsBlocks.ANIMATED_DOOR_ENTITY, blockPos, blockState);
 	}
 }

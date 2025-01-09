@@ -71,6 +71,6 @@
 		"fabric-api": "*",
 		"resourcefulconfig": ">=2.1.2",
 		"cardinal-components-base": "*",
-		"cardinal-components-block": ">=5.2.0"
+		"cardinal-components-block": ">=5.2.3"
 	}
 }

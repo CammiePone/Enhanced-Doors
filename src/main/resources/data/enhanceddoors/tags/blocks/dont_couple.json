@@ -20,6 +20,10 @@
 		{
 			"id": "create:framed_glass_door",
 			"required": false
+		},
+		{
+			"id": "arcanuscontinuum:magic_door",
+			"required": false
 		}
 	]
 }

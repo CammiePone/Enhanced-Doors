@@ -50,8 +50,8 @@
 				"quilt"
 			],
 			"dependencies": [
-				"cardinal-components-api(required)#{modrinth:K01OU20C}{curseforge:318449}",
-				"resourceful-config(required)#{modrinth:M1953qlQ}{curseforge:714059}"
+				"cardinal-components-api(required){modrinth:K01OU20C}{curseforge:318449}",
+				"resourceful-config(required){modrinth:M1953qlQ}{curseforge:714059}"
 			]
 		},
 		"modmenu": {
@@ -63,7 +63,7 @@
 	"mixins": [
 		"enhanceddoors.mixins.json"
 	],
-	"access_widener": "enhanceddoors.accesswidener",
+	"accessWidener": "enhanceddoors.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.16.9",
 		"minecraft": "~1.20.1",

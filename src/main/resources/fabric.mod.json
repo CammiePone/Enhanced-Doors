@@ -66,7 +66,7 @@
 	"accessWidener": "enhanceddoors.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.16.9",
-		"minecraft": "~1.20.1",
+		"minecraft": "=1.20.1",
 		"java": ">=17",
 		"fabric-api": "*",
 		"resourcefulconfig": ">=2.1.2",

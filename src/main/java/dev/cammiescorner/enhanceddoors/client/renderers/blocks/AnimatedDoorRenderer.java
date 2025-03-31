@@ -51,25 +51,25 @@ public class AnimatedDoorRenderer implements BlockEntityRenderer<BlockEntity> {
 		switch(facing) {
 			case NORTH -> {
 				poseStack.translate(hingeSide == DoorHingeSide.RIGHT ? 1f : 0f, 0f, 1f);
-				poseStack.mulPose(Axis.YP.rotationDegrees((hingeSide == DoorHingeSide.LEFT ? 1 : -1) * 90 * openingProgress));
+				poseStack.mulPose(Axis.YP.rotationDegrees((hingeSide == DoorHingeSide.LEFT ? 1f : -1f) * 90f * openingProgress));
 				poseStack.translate(hingeSide == DoorHingeSide.RIGHT ? -1f : 0f, 0f, -1f);
 				poseStack.translate(facing.getStepX() * offset, facing.getStepY() * offset, facing.getStepZ() * offset);
 			}
 			case EAST -> {
 				poseStack.translate(0f, 0f, hingeSide == DoorHingeSide.RIGHT ? 1f : 0f);
-				poseStack.mulPose(Axis.YP.rotationDegrees((hingeSide == DoorHingeSide.LEFT ? 1 : -1) * 90 * openingProgress));
+				poseStack.mulPose(Axis.YP.rotationDegrees((hingeSide == DoorHingeSide.LEFT ? 1f : -1f) * 90f * openingProgress));
 				poseStack.translate(0f, 0f, hingeSide == DoorHingeSide.RIGHT ? -1f : 0f);
 				poseStack.translate(facing.getStepX() * offset, facing.getStepY() * offset, facing.getStepZ() * offset);
 			}
 			case SOUTH -> {
 				poseStack.translate(hingeSide == DoorHingeSide.RIGHT ? 0f : 1f, 0f, 0f);
-				poseStack.mulPose(Axis.YP.rotationDegrees((hingeSide == DoorHingeSide.LEFT ? 1 : -1) * 90 * openingProgress));
+				poseStack.mulPose(Axis.YP.rotationDegrees((hingeSide == DoorHingeSide.LEFT ? 1f : -1f) * 90f * openingProgress));
 				poseStack.translate(hingeSide == DoorHingeSide.RIGHT ? 0f : -1f, 0f, 0f);
 				poseStack.translate(facing.getStepX() * offset, facing.getStepY() * offset, facing.getStepZ() * offset);
 			}
 			case WEST -> {
 				poseStack.translate(1f, 0f, hingeSide == DoorHingeSide.RIGHT ? 0f : 1f);
-				poseStack.mulPose(Axis.YP.rotationDegrees((hingeSide == DoorHingeSide.LEFT ? 1 : -1) * 90 * openingProgress));
+				poseStack.mulPose(Axis.YP.rotationDegrees((hingeSide == DoorHingeSide.LEFT ? 1f : -1f) * 90f * openingProgress));
 				poseStack.translate(-1f, 0f, hingeSide == DoorHingeSide.RIGHT ? 0f : -1f);
 				poseStack.translate(facing.getStepX() * offset, facing.getStepY() * offset, facing.getStepZ() * offset);
 			}
@@ -101,9 +101,37 @@ public class AnimatedDoorRenderer implements BlockEntityRenderer<BlockEntity> {
 
 		poseStack.pushPose();
 
-		((GotAnyGrapes) state.getBlock()).setUseSuper(true);
-		blockRenderer.renderSingleBlock(state, poseStack, multiBufferSource, i, j);
-		((GotAnyGrapes) state.getBlock()).setUseSuper(false);
+		switch(facing) {
+			case NORTH -> {
+				poseStack.translate(0f, half == Half.TOP ? 1f : 0f, 1f);
+				poseStack.mulPose(Axis.XP.rotationDegrees((half == Half.BOTTOM ? 1f : -1f) * 90 * openingProgress));
+				poseStack.translate(0f, half == Half.TOP ? -1f : 0f, -1f);
+				poseStack.translate(0f, (half == Half.TOP ? facing.getStepZ() : -facing.getStepZ()) * offset, (half == Half.TOP ? facing.getStepY() : -facing.getStepY()) * offset);
+			}
+			case SOUTH -> {
+				poseStack.translate(0f, half == Half.TOP ? 1f : 0f, 0f);
+				poseStack.mulPose(Axis.XP.rotationDegrees((half == Half.BOTTOM ? -1f : 1f) * 90 * openingProgress));
+				poseStack.translate(0f, half == Half.TOP ? -1f : 0f, 0f);
+				poseStack.translate(0f, (half == Half.TOP ? -facing.getStepZ() : facing.getStepZ()) * offset, (half == Half.TOP ? -facing.getStepY() : facing.getStepY()) * offset);
+			}
+			case WEST -> {
+				poseStack.translate(1f, half == Half.TOP ? 1f : 0f, 0f);
+				poseStack.mulPose(Axis.ZP.rotationDegrees((half == Half.BOTTOM ? -1f : 1f) * 90 * openingProgress));
+				poseStack.translate(-1f, half == Half.TOP ? -1f : 0f, 0f);
+				poseStack.translate((half == Half.TOP ? -facing.getStepY() : facing.getStepY()) * offset, (half == Half.TOP ? facing.getStepX() : -facing.getStepX()) * offset, 0f);
+			}
+			case EAST -> {
+				poseStack.translate(0f, half == Half.TOP ? 1f : 0f, 0f);
+				poseStack.mulPose(Axis.ZP.rotationDegrees((half == Half.BOTTOM ? 1f : -1f) * 90 * openingProgress));
+				poseStack.translate(0f, half == Half.TOP ? -1f : 0f, 0f);
+				poseStack.translate((half == Half.TOP ? facing.getStepY() : -facing.getStepY()) * offset, (half == Half.TOP ? -facing.getStepX() : facing.getStepX()) * offset, 0f);
+			}
+			default -> {}
+		}
+
+		((GotAnyGrapes) defaultState.getBlock()).setUseSuper(true);
+		blockRenderer.renderSingleBlock(defaultState, poseStack, multiBufferSource, i, j);
+		((GotAnyGrapes) defaultState.getBlock()).setUseSuper(false);
 
 		poseStack.popPose();
 	}

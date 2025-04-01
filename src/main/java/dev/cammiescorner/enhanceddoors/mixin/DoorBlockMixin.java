@@ -46,9 +46,6 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 
 	@Inject(method = "neighborChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
 	private void openSesameRedstone(BlockState blockState, Level level, BlockPos blockPos, Block block, BlockPos blockPos2, boolean bl, CallbackInfo ci, @Local(ordinal = 1) boolean bl2) {
-		if(!EnhancedDoorsConfig.connectedDoors)
-			return;
-
 		Direction facing = blockState.getValue(FACING);
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
@@ -57,7 +54,7 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 		if(blockEntity != null)
 			blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
 
-		if(blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
+		if(!EnhancedDoorsConfig.connectedDoors || blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
 			return;
 
 		if(offsetState.getBlock() instanceof DoorBlock doorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
@@ -76,9 +73,6 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 
 	@Inject(method = "setOpen", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
 	private void openSesameVillagers(Entity entity, Level level, BlockState blockState, BlockPos blockPos, boolean bl, CallbackInfo ci) {
-		if(!EnhancedDoorsConfig.connectedDoors)
-			return;
-
 		Direction facing = blockState.getValue(FACING);
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
@@ -87,7 +81,7 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 		if(blockEntity != null)
 			blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
 
-		if(!DoorBlock.isWoodenDoor(offsetState) || blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
+		if(!DoorBlock.isWoodenDoor(offsetState) || !EnhancedDoorsConfig.connectedDoors || blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
 			return;
 
 		if(offsetState.getBlock() instanceof DoorBlock doorBlock && offsetState.getValue(OPEN) == blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
@@ -104,9 +98,6 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 
 	@Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
 	private void openSesamePlayers(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult, CallbackInfoReturnable<InteractionResult> cir) {
-		if(!EnhancedDoorsConfig.connectedDoors)
-			return;
-
 		Direction facing = blockState.getValue(FACING);
 		BlockPos offset = blockPos.relative(blockState.getValue(HINGE) == DoorHingeSide.RIGHT ? facing.getCounterClockWise() : facing.getClockWise());
 		BlockState offsetState = level.getBlockState(offset);
@@ -115,7 +106,7 @@ public abstract class DoorBlockMixin extends Block implements EntityBlock, GotAn
 		if(blockEntity != null)
 			blockEntity.getComponent(EnhancedDoorsComponents.OPENING_PROGRESS).justOpened();
 
-		if(!DoorBlock.isWoodenDoor(offsetState) || blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
+		if(!DoorBlock.isWoodenDoor(offsetState) || !EnhancedDoorsConfig.connectedDoors || blockState.is(EnhancedDoorsTags.DONT_COUPLE) || offsetState.is(EnhancedDoorsTags.DONT_COUPLE))
 			return;
 
 		if(offsetState.getBlock() instanceof DoorBlock doorBlock && offsetState.getValue(OPEN) != blockState.getValue(OPEN) && offsetState.getValue(HINGE) != blockState.getValue(HINGE) && offsetState.getValue(FACING) == blockState.getValue(FACING)) {
